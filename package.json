@@ -1,0 +1,35 @@
+{
+	"name": "gleam",
+	"private": true,
+	"description": "Reusable server/browser entities and models",
+	"version": "0.0.1",
+	"author": {
+		"name": "Nik Butenko",
+		"email": "nikita.butenko@gmail.com"
+	},
+	"contributors": [
+		{
+			"name": "Nik Butenko",
+			"email": "nikita.butenko@gmail.com"
+		}
+	],
+	"dependencies": {
+		"async": "*",
+		"underscore": "*",
+		"underscore.string": "*"
+	},
+	"keywords": [
+		"model",
+		"entity",
+		"browser",
+		"reusable"
+	],
+	"bugs": {
+		"email": "nikita.butenko@gmail.com"
+	},
+	"main": "index",
+	"engines": {
+		"node": "*"
+	},
+	"readmeFilename": "README.md"
+}
