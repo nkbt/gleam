@@ -2,7 +2,7 @@
 	"name": "gleam",
 	"private": true,
 	"description": "Reusable server/browser entities and models",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": {
 		"name": "Nik Butenko",
 		"email": "nikita.butenko@gmail.com"
@@ -24,7 +24,12 @@
 		"browser",
 		"reusable"
 	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/nkbt/gleam.git"
+	},
 	"bugs": {
+		"url": "http://github.com/nkbt/gleam/issues",
 		"email": "nikita.butenko@gmail.com"
 	},
 	"main": "index",
