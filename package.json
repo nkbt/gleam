@@ -2,7 +2,7 @@
 	"name": "gleam",
 	"private": true,
 	"description": "Reusable server/browser entities and models",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"author": {
 		"name": "Nik Butenko",
 		"email": "nikita.butenko@gmail.com"
