@@ -1,0 +1,10 @@
+{
+	"id": 1,
+	"name": "Nik",
+	"email": "nik@butenko.me",
+	"test": {
+		"id": 2,
+		"__ns": "user/test"
+	},
+	"__ns": "userWithTest"
+}
