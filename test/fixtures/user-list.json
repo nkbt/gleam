@@ -1,0 +1,14 @@
+[
+	{
+		"id": 1,
+		"name": "Nik1",
+		"email": "nik@butenko.me",
+		"__ns": "user"
+	},
+	{
+		"id": 2,
+		"name": "Nik2",
+		"email": "nik@butenko.me",
+		"__ns": "user"
+	}
+]
