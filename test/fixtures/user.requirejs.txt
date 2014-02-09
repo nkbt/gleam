@@ -1,0 +1,33 @@
+/*jshint browser:true */
+/*global define: false, require:false, requirejs:false */
+
+
+define(['underscore', 'entity/abstract'], function (_, Entity) {
+	"use strict";
+
+	var exports = {Entity: null},
+		__namespace = "//%NAMESPACE";
+
+"use strict";
+
+/**
+ * @module UserEntity
+ */
+var UserEntity = {
+	id: function () {
+	},
+	name: function () {
+	},
+	email: function () {
+	},
+	_validateEmail: function (value) {
+		return value === 'nik@butenko.me';
+	}
+};
+
+exports.Entity = UserEntity;
+
+	return function (defaults) {
+		return new Entity(__namespace, exports.Entity, defaults);
+	};
+});
