@@ -1,17 +1,17 @@
 "use strict";
 
 var path = require('path');
-var requireText = require('./support/require-text');
 var expect = require('chai').expect;
-var fs = require('fs');
-var rimraf = require('rimraf');
-var gleamFactory = require(path.join(__dirname, '..', 'lib', 'index'));
+var gleamFactory = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#is', function () {
 	var gleam, entity;
 
 	before(function () {
 		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
+	});
+
+	beforeEach(function () {
 		entity = gleam.entity('user');
 	});
 

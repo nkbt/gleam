@@ -27,7 +27,8 @@
 		"grunt-contrib-watch": "~0.5.3",
 		"mocha": "~1.17.1",
 		"chai": "~1.9.0",
-		"rimraf": "~2.2.6"
+		"rimraf": "~2.2.6",
+		"jscoverage": "~0.3.8"
 	},
 	"keywords": [
 		"model",
