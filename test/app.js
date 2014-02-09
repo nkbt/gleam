@@ -3,6 +3,8 @@
 var path = require('path');
 var requireText = require('./support/require-text');
 var expect = require('chai').expect;
+var fs = require('fs');
+var rimraf = require('rimraf');
 var gleamFactory = require(path.join(__dirname, '..', 'lib', 'index'));
 
 describe('Gleam', function () {
@@ -14,7 +16,7 @@ describe('Gleam', function () {
 
 
 	it('should have expected methods', function () {
-		expect(gleam).to.have.keys('entity', 'is', 'fromJson', 'browserJs');
+		expect(gleam).to.have.keys('entity', 'is', 'fromJson', 'buildSync');
 	});
 
 
@@ -79,19 +81,25 @@ describe('Gleam', function () {
 	});
 
 
-	describe('#browserJs', function () {
-		var js;
+	describe('#build', function () {
+		var out = path.join(__dirname, 'fixtures', 'out'),
+			userRequireJs;
 
 		before(function () {
-			js = gleam.browserJs('user');
+			fs.mkdirSync(out);
+			gleam.buildSync(out);
+			userRequireJs = requireText('./fixtures/out/user.js', 'UTF-8');
+		});
+		after(function () {
+			rimraf.sync(out);
 		});
 
 		it('should return string', function () {
-			expect(js).to.be.a('string');
+			expect(userRequireJs).to.be.a('string');
 		});
 
 		it('should return valid RequireJS module', function () {
-			expect(js).to.be.equal(requireText('./fixtures/user.requirejs.txt', 'UTF-8'));
+			expect(userRequireJs).to.be.equal(requireText('./fixtures/user.requirejs.txt', 'UTF-8'));
 		});
 
 	});

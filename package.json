@@ -15,7 +15,9 @@
 	],
 	"dependencies": {
 		"async": "~0.2.10",
-		"underscore": "~1.5.2"
+		"underscore": "~1.5.2",
+		"glob": "~3.2.8",
+		"mkdirp": "~0.3.5"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.2",
@@ -24,7 +26,8 @@
 		"grunt-contrib-jshint": "~0.7.2",
 		"grunt-contrib-watch": "~0.5.3",
 		"mocha": "~1.17.1",
-		"chai": "~1.9.0"
+		"chai": "~1.9.0",
+		"rimraf": "~2.2.6"
 	},
 	"keywords": [
 		"model",
