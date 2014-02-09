@@ -3,7 +3,7 @@
 var path = require('path');
 var requireText = require('./support/require-text');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'lib', 'index'));
+var gleamFactory = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#fromJson', function () {
 	var gleam, userJson, userListJson;

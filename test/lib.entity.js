@@ -2,7 +2,7 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'lib', 'index'));
+var gleamFactory = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#entity', function () {
 	var gleam, userData;

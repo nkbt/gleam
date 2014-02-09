@@ -1,14 +1,11 @@
 REPORTER = dot
-REPORTER = dot
-
 test:
-  @NODE_ENV=test ./node_modules/.bin/mocha \
-    --reporter $(REPORTER) \
+    @NODE_ENV=test ./node_modules/.bin/mocha -b --reporter $(REPORTER)
 
-test-w:
-  @NODE_ENV=test ./node_modules/.bin/mocha \
-    --reporter $(REPORTER) \
-    --growl \
-    --watch
+app-cov:
+    ./node_modules/.bin/jscoverage lib lib-cov
 
-.PHONY: test test-w
+test-cov: app-cov
+    @EXPRESS_COV=1 $(MAKE) test REPORTER=html-cov > docs/report/coverage.html
+
+.PHONY: test
