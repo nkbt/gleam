@@ -59,7 +59,7 @@ describe('Gleam', function () {
 			json = requireText('./fixtures/user.json', 'UTF-8');
 
 		before(function () {
-			entity = gleam.entity('user');
+			entity = gleam.fromJson(json);
 		});
 
 		it('should return UserEntity', function () {
