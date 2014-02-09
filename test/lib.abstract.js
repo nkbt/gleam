@@ -2,31 +2,21 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'lib', 'index'));
+var gleamFactory = require(path.join(__dirname, '..', 'index'));
 var requireText = require('./support/require-text');
+var spaceFix = require('./support/space-fix');
 
 describe('Entity', function () {
-	var gleam, userData, userWithTestData;
+	var gleam, userData, userJson, userWithTestData, userWithTestJson;
 
 	before(function () {
 		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
 		userData = require('./fixtures/user.json');
-		userWithTestData = requireText('./fixtures/user-with-test.json');
+		userJson = requireText('./fixtures/user.json');
+		userWithTestData = require('./fixtures/user-with-test.json');
+		userWithTestJson = requireText('./fixtures/user-with-test.json');
 	});
 
-	it('should have undefined initial values', function () {
-		var entity = gleam.entity('user');
-		expect(entity.initial().id).to.be.undefined;
-		expect(entity.initial().name).to.be.undefined;
-		expect(entity.initial().email).to.be.undefined;
-	});
-
-	it('should not have modified status', function () {
-		var entity = gleam.entity('user');
-		expect(entity.modified().id).to.be.false;
-		expect(entity.modified().name).to.be.false;
-		expect(entity.modified().email).to.be.false;
-	});
 
 	describe('#set', function () {
 		var entity;
@@ -65,17 +55,6 @@ describe('Entity', function () {
 			}).to.throw('Value [wrong-email] is not valid for [user.email]');
 		});
 
-		it('should set modified flag for set values', function () {
-			entity.set({id: 1});
-			expect(entity.modified().id).to.be.true;
-			expect(entity.modified().email).to.be.false;
-		});
-
-		it('should not modify initial', function () {
-			entity.set({id: 1});
-			expect(entity.initial().id).to.be.undefined;
-		});
-
 	});
 
 	describe('#get', function () {
@@ -86,7 +65,7 @@ describe('Entity', function () {
 		});
 
 		it('should return simple object with all nested entities simplified', function () {
-			var entity = gleam.fromJson(userWithTestData);
+			var entity = gleam.fromJson(userWithTestJson);
 			expect(entity.get()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", test: {id: 2}});
 		});
 
@@ -114,7 +93,7 @@ describe('Entity', function () {
 	describe('#getFlat', function () {
 
 		it('should return simple object with stripped nested entities', function () {
-			var entity = gleam.fromJson(userWithTestData);
+			var entity = gleam.fromJson(userWithTestJson);
 			expect(entity.getFlat()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me"});
 		});
 
@@ -122,22 +101,93 @@ describe('Entity', function () {
 
 	describe('#initial', function () {
 
+		it('should have undefined initial values', function () {
+			var entity = gleam.entity('user');
+			expect(entity.initial()).to.deep.equal({id: undefined, name: undefined, email: undefined});
+		});
+
+		it('should return initial value of entity', function () {
+			var entity = gleam.entity('user', userData);
+			expect(entity.initial()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me"});
+		});
+
+		it('should not modify initial after setting new values', function () {
+			var entity = gleam.entity('user');
+			entity.set({id: 1});
+			expect(entity.initial().id).to.be.undefined;
+		});
+
 	});
 
 	describe('#modified', function () {
 
+		it('should not have modified status', function () {
+			var entity = gleam.entity('user');
+			expect(entity.modified()).to.deep.equal({id: false, name: false, email: false});
+		});
+
+		it('should set modified flag for set values', function () {
+			var entity = gleam.entity('user');
+			entity.set({id: 1});
+			expect(entity.modified().id).to.be.true;
+			expect(entity.modified().email).to.be.false;
+		});
+
 	});
 
 	describe('#is', function () {
+		var entity;
+
+		beforeEach(function () {
+			entity = gleam.entity('user');
+		});
+
+		it('should match UserEntity to be instance of "user"', function () {
+			expect(entity.is('user')).to.be.true;
+		});
+
+		it('should not match UserEntity to be instance of "not/user"', function () {
+			expect(entity.is('not/user')).to.be.false;
+		});
 
 	});
 
 	describe('#toJSON', function () {
 
+		it('should return simple object with namespace', function () {
+			var entity = gleam.fromJson(userJson);
+			expect(entity.toJSON()).to.deep.equal(userData);
+		});
+
+		it('should return simple object with namespaces for nested entity', function () {
+			var entity = gleam.fromJson(userWithTestJson);
+			expect(entity.toJSON()).to.deep.equal(userWithTestData);
+		});
+
+		it('should support JSON.stringify', function () {
+			var entity = gleam.fromJson(userJson);
+			expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(userJson));
+		});
+
+		it('should support JSON.stringify for nested entity', function () {
+			var entity = gleam.fromJson(userWithTestJson);
+			expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(userWithTestJson));
+		});
+
 	});
 
 
 	describe('#toString', function () {
+
+		it('should return descriptive string', function () {
+			var entity = gleam.entity('user');
+			expect(entity.toString()).to.equal('[object Gleam:user]');
+		});
+
+		it('should support casting to string', function () {
+			var entity = gleam.entity('user/test');
+			expect(['', entity].join('')).to.equal('[object Gleam:user/test]');
+		});
 
 	});
 
