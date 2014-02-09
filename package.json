@@ -2,7 +2,7 @@
 	"name": "gleam",
 	"private": true,
 	"description": "Reusable server/browser entities and models",
-	"version": "0.0.8",
+	"version": "3.0.1",
 	"author": {
 		"name": "Nik Butenko",
 		"email": "nikita.butenko@gmail.com"
@@ -14,9 +14,18 @@
 		}
 	],
 	"dependencies": {
-		"async": "*",
-		"underscore": "*",
-		"underscore.string": "*"
+		"async": "~0.2.10",
+		"underscore": "~1.5.2",
+		"underscore.string": "~2.3.3"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.2",
+		"grunt-cli": "~0.1.13",
+		"grunt-simple-mocha": "~0.4.0",
+		"grunt-contrib-jshint": "~0.7.2",
+		"grunt-contrib-watch": "~0.5.3",
+		"mocha": "~1.17.1",
+		"chai": "~1.9.0"
 	},
 	"keywords": [
 		"model",
