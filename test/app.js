@@ -9,7 +9,7 @@ describe('Gleam', function () {
 	var gleam;
 
 	before(function () {
-		gleam = gleamFactory(path.join(__dirname, 'gleams'));
+		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
 	});
 
 
