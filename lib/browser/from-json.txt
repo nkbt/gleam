@@ -1,7 +1,3 @@
-/*jshint browser:true */
-/*global define: false, require:false, requirejs:false */
-
-
 define(['underscore'], function (_) {
 	"use strict";
 
