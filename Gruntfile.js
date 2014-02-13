@@ -14,11 +14,32 @@ module.exports = function (grunt) {
 					ui: 'bdd',
 					reporter: 'tap'
 				}
+			},
+			doc: {
+				src: ['test/*.js'],
+				options: {
+					globals: ['should'],
+					timeout: 3000,
+					ignoreLeaks: false,
+					ui: 'bdd',
+					reporter: 'doc'
+				}
+			}
+		},
+		mochaDoc: {
+			src: ['doc/header.html', 'doc/content.html', 'doc/footer.html']
+		},
+		concat: {
+			options: {
+				separator: '\n'
+			},
+			doc: {
+				src: ['doc/header.html', 'content.html', 'doc/footer.html'],
+				dest: 'doc.html'
 			}
 		},
 		jshint: {
-			options: {
-			},
+			options: {},
 			gruntfile: {
 				src: 'Gruntfile.js',
 				options: {
@@ -58,9 +79,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-simple-mocha');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'simplemocha']);
-	grunt.registerTask('test', 'simplemocha');
+	grunt.registerTask('default', ['jshint', 'simplemocha:test']);
+	grunt.registerTask('test', 'simplemocha:test');
+	grunt.registerTask('mocha-doc', ['simplemocha:doc']);
+	grunt.registerTask('doc', ['concat']);
 
 };
