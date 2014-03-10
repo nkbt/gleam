@@ -2,13 +2,13 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'index'));
+var Gleam = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#is', function () {
 	var gleam, entity;
 
 	before(function () {
-		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
+		gleam = new Gleam(path.join(__dirname, 'fixtures', 'gleams'));
 	});
 
 	beforeEach(function () {
@@ -16,15 +16,15 @@ describe('Gleam#is', function () {
 	});
 
 	it('should match UserEntity to be instance of "user"', function () {
-		expect(gleam.is(entity, 'user')).to.be.true;
+		expect(Gleam.is(entity, 'user')).to.be.true;
 	});
 
 	it('should not match UserEntity to be instance of "not/user"', function () {
-		expect(gleam.is(entity, 'not/user')).to.be.false;
+		expect(Gleam.is(entity, 'not/user')).to.be.false;
 	});
 
 	it('should not match wrong input to be instance of "user"', function () {
-		expect(gleam.is('Not an object', 'user')).to.be.false;
+		expect(Gleam.is('Not an object', 'user')).to.be.false;
 	});
 
 });

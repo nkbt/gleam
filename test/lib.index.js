@@ -2,21 +2,37 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'index'));
+var Gleam = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam', function () {
-	var gleam;
+	var root = path.join(__dirname, 'fixtures', 'gleams'),
+		gleam;
+
 
 	before(function () {
-		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
+		gleam = new Gleam(root);
 	});
 
-	it('should have [entity, is, fromJson, buildSync] methods', function () {
-		expect(gleam).to.have.keys('entity', 'is', 'fromJson', 'buildSync');
-		expect(gleam.entity).to.be.a('function');
-		expect(gleam.is).to.be.a('function');
-		expect(gleam.fromJson).to.be.a('function');
-		expect(gleam.buildSync).to.be.a('function');
+
+	it('should throw error if root not set', function () {
+		expect(Gleam).to.throw('Root');
+	});
+
+
+	it('should have private _root property', function () {
+		expect(gleam).to.have.property('_root', root);
+	});
+
+
+	it('should response to [entity, fromJson] instance methods', function () {
+		expect(Gleam).to.respondTo('entity');
+		expect(Gleam).to.respondTo('fromJson');
+	});
+
+
+	it('should response to [is, buildSync] static methods', function () {
+		expect(Gleam).itself.to.respondTo('is');
+		expect(Gleam).itself.to.respondTo('buildSync');
 	});
 
 });
