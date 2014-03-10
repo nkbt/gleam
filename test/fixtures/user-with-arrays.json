@@ -1,0 +1,20 @@
+{
+	"id": 1,
+	"name": "Nik",
+	"email": "nik@butenko.me",
+	"tests": [
+		{
+			"id": 2,
+			"__ns": "user/test"
+		},
+		{
+			"id": 3,
+			"__ns": "user/test"
+		}
+	],
+	"messages": [
+		"Message 1",
+		"Message 2"
+	],
+	"__ns": "userWithArrays"
+}
