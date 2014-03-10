@@ -2,13 +2,13 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'index'));
+var Gleam = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#entity', function () {
 	var gleam, userData;
 
 	before(function () {
-		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
+		gleam = new Gleam(path.join(__dirname, 'fixtures', 'gleams'));
 		userData = require('./fixtures/user.json');
 	});
 
@@ -19,7 +19,7 @@ describe('Gleam#entity', function () {
 		expect(entity.id).to.be.a('function');
 		expect(entity.name).to.be.a('function');
 		expect(entity.email).to.be.a('function');
-		expect(gleam.is(entity, 'user')).to.be.true;
+		expect(Gleam.is(entity, 'user')).to.be.true;
 	});
 
 	it('should create UserTestEntity', function () {
@@ -27,7 +27,7 @@ describe('Gleam#entity', function () {
 		expect(entity).to.be.an('object');
 		expect(entity).to.have.keys('id');
 		expect(entity.id).to.be.a('function');
-		expect(gleam.is(entity, 'user/test')).to.be.true;
+		expect(Gleam.is(entity, 'user/test')).to.be.true;
 	});
 
 	it('should create UserEntity with defaults', function () {

@@ -2,7 +2,7 @@
 
 var path = require('path');
 var expect = require('chai').expect;
-var gleamFactory = require(path.join(__dirname, '..', 'index'));
+var Gleam = require(path.join(__dirname, '..', 'index'));
 var requireText = require('./support/require-text');
 var spaceFix = require('./support/space-fix');
 
@@ -10,7 +10,7 @@ describe('Entity', function () {
 	var gleam, userData, userJson, userWithTestData, userWithTestJson;
 
 	before(function () {
-		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
+		gleam = new Gleam(path.join(__dirname, 'fixtures', 'gleams'));
 		userData = require('./fixtures/user.json');
 		userJson = requireText('./fixtures/user.json');
 		userWithTestData = require('./fixtures/user-with-test.json');

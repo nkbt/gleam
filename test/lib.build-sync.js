@@ -6,16 +6,15 @@ var expect = require('chai').expect;
 var fs = require('fs');
 var rimraf = require('rimraf');
 var spaceFix = require('./support/space-fix');
-var gleamFactory = require(path.join(__dirname, '..', 'index'));
+var Gleam = require(path.join(__dirname, '..', 'index'));
 
 describe('Gleam#build', function () {
-	var gleam, outDir, jsOut, jsIn;
+	var outDir, jsOut, jsIn;
 
 	before(function () {
 		outDir = path.join(__dirname, 'fixtures', 'out');
-		gleam = gleamFactory(path.join(__dirname, 'fixtures', 'gleams'));
 		fs.mkdirSync(outDir);
-		gleam.buildSync(outDir);
+		Gleam.buildSync(path.join(__dirname, 'fixtures', 'gleams'), outDir);
 		jsOut = requireText('./fixtures/out/user.js');
 		jsIn = requireText('./fixtures/user.requirejs.txt');
 	});
