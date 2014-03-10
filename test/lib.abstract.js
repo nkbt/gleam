@@ -55,21 +55,19 @@ describe('Entity', function () {
 			}).to.throw('Value [wrong-email] is not valid for [user.email]');
 		});
 
-	});
-
-
-	describe('#isValid', function () {
-		var entity;
-		beforeEach(function () {
-			entity = gleam.entity('user');
-		});
-		
-		it('should return "true" for valid email passed', function () {
-			expect(entity.isValid('email', 'nik@butenko.me')).to.be.true;
+		it('should set overridden value using setter _setEmail no matter what is passed, email = always@email.com', function () {
+			var entity = gleam.entity('setterGetter', {email: 'nik@butenko.me'});
+			expect(entity.email()).to.equal('always@email.com');
 		});
 
-		it('should return "false" for invalid email passed', function () {
-			expect(entity.isValid('email', 'wrong@email')).to.be.false;
+		it('should set value in setter _setPassword using the context, password = context.password2', function () {
+			var entity = gleam.entity('setterGetter', {password: 'test', password2: 'test2'});
+			expect(entity.password()).to.equal('test2');
+		});
+
+		it('should set value in setter _setId using self data, id = self.constant() + value', function () {
+			var entity = gleam.entity('setterGetter', {id: 1});
+			expect(entity.id()).to.equal(43);
 		});
 
 	});
@@ -89,7 +87,39 @@ describe('Entity', function () {
 
 		it('should return simple object with all nested arrays of entities simplified', function () {
 			var entity = gleam.fromJson(requireText('./fixtures/user-with-arrays.json'));
-			expect(entity.get()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", tests: [{id: 2}, {id: 3}], messages: ["Message 1", "Message 2"]});
+			expect(entity.get()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", tests: [
+				{id: 2},
+				{id: 3}
+			], messages: ["Message 1", "Message 2"]});
+		});
+
+		it('should return overridden value using getter _getName', function () {
+			var entity = gleam.entity('setterGetter');
+			entity.name('Me');
+			expect(entity.name()).to.equal('Always');
+		});
+
+		it('should use self instance to override value using getter _getAddress, address = self.name()', function () {
+			var entity = gleam.entity('setterGetter');
+			entity.address('Address');
+			expect(entity.address()).to.equal('Always');
+		});
+
+	});
+
+
+	describe('#isValid', function () {
+		var entity;
+		beforeEach(function () {
+			entity = gleam.entity('user');
+		});
+
+		it('should return "true" for valid email passed', function () {
+			expect(entity.isValid('email', 'nik@butenko.me')).to.be.true;
+		});
+
+		it('should return "false" for invalid email passed', function () {
+			expect(entity.isValid('email', 'wrong@email')).to.be.false;
 		});
 
 	});
