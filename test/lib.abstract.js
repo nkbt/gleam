@@ -57,6 +57,24 @@ describe('Entity', function () {
 
 	});
 
+
+	describe('#isValid', function () {
+		var entity;
+		beforeEach(function () {
+			entity = gleam.entity('user');
+		});
+		
+		it('should return "true" for valid email passed', function () {
+			expect(entity.isValid('email', 'nik@butenko.me')).to.be.true;
+		});
+
+		it('should return "false" for invalid email passed', function () {
+			expect(entity.isValid('email', 'wrong@email')).to.be.false;
+		});
+
+	});
+
+
 	describe('#get', function () {
 
 		it('should return simple object with current entity values', function () {
@@ -67,6 +85,11 @@ describe('Entity', function () {
 		it('should return simple object with all nested entities simplified', function () {
 			var entity = gleam.fromJson(userWithTestJson);
 			expect(entity.get()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", test: {id: 2}});
+		});
+
+		it('should return simple object with all nested arrays of entities simplified', function () {
+			var entity = gleam.fromJson(requireText('./fixtures/user-with-arrays.json'));
+			expect(entity.get()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", tests: [{id: 2}, {id: 3}], messages: ["Message 1", "Message 2"]});
 		});
 
 	});
@@ -95,6 +118,11 @@ describe('Entity', function () {
 		it('should return simple object with stripped nested entities', function () {
 			var entity = gleam.fromJson(userWithTestJson);
 			expect(entity.getFlat()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me"});
+		});
+
+		it('should return simple object with stripped nested entities in all Array-typed properties', function () {
+			var entity = gleam.fromJson(requireText('./fixtures/user-with-arrays.json'));
+			expect(entity.getFlat()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me", tests: [], messages: ["Message 1", "Message 2"]});
 		});
 
 	});
@@ -172,6 +200,12 @@ describe('Entity', function () {
 		it('should support JSON.stringify for nested entity', function () {
 			var entity = gleam.fromJson(userWithTestJson);
 			expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(userWithTestJson));
+		});
+
+		it('should support JSON.stringify for arrays of nested entities', function () {
+			var json = requireText('./fixtures/user-with-arrays.json'),
+				entity = gleam.fromJson(json);
+			expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(json));
 		});
 
 	});
