@@ -1,4 +1,4 @@
-define(['underscore', 'entity/abstract'], function (_, Entity) {
+define(['underscore', 'entity/abstract'], function (_, factory) {
 	"use strict";
 
 	var exports = {Entity: null},
@@ -7,6 +7,6 @@ define(['underscore', 'entity/abstract'], function (_, Entity) {
 <%= content %>
 
 	return function (defaults) {
-		return new Entity(_namespace, exports.Entity, defaults);
+		return factory(_namespace, exports.Entity, defaults);
 	};
 });

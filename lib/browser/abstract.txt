@@ -1,9 +1,0 @@
-define(['underscore'], function () {
-	"use strict";
-
-	var exports = {Entity: null};
-
-<%= content %>
-
-	return exports.Entity;
-});
