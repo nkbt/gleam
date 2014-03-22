@@ -68,9 +68,7 @@ describe('Gleam#entity', function () {
 
 	it('should set defaults without setting modified flag', function () {
 		var entity = gleam.entity('user', userData);
-		expect(entity.modified().id).to.be.false;
-		expect(entity.modified().name).to.be.false;
-		expect(entity.modified().email).to.be.false;
+		expect(entity.getModified()).to.be.empty;
 	});
 
 	it('should fill initial values with defaults', function () {
