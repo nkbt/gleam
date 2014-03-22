@@ -73,9 +73,9 @@ describe('Gleam#entity', function () {
 
 	it('should fill initial values with defaults', function () {
 		var entity = gleam.entity('user', userData);
-		expect(entity.initial().id).to.equal(userData.id);
-		expect(entity.initial().name).to.equal(userData.name);
-		expect(entity.initial().email).to.equal(userData.email);
+		expect(entity.getInitial().id).to.equal(userData.id);
+		expect(entity.getInitial().name).to.equal(userData.name);
+		expect(entity.getInitial().email).to.equal(userData.email);
 	});
 
 });
