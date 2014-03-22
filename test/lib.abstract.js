@@ -157,25 +157,31 @@ describe('Entity', function () {
 
 	});
 
-	describe('#initial', function () {
 
-		it('should have undefined initial values', function () {
+	describe('#getInitial', function () {
+
+		it('should not have any initial properties', function () {
 			var entity = gleam.entity('user');
-			expect(entity.initial()).to.deep.equal({id: undefined, name: undefined, email: undefined});
+			expect(entity.getInitial()).to.be.empty;
 		});
 
-		it('should return initial value of entity', function () {
-			var entity = gleam.entity('user', userData);
-			expect(entity.initial()).to.deep.equal({id: 1, name: "Nik", email: "nik@butenko.me"});
+		it('should add default values to initial fields', function () {
+			var entity = gleam.entity('user', {id: 1});
+			expect(entity.getInitial()).to.have.keys('id');
+			expect(entity.getInitial()).to.be.deep.equal({id: 1});
+			expect(entity.getInitial().id).to.equal(1);
 		});
 
 		it('should not modify initial after setting new values', function () {
-			var entity = gleam.entity('user');
-			entity.set({id: 1});
-			expect(entity.initial().id).to.be.undefined;
+			var entity = gleam.entity('user', {name: 'test'});
+			entity.set({id: 1, name: 'test2'});
+			expect(entity.getInitial()).not.to.have.keys('id');
+			expect(entity.getInitial()).to.have.keys('name');
+			expect(entity.getInitial().id).to.be.undefined;
+			expect(entity.getInitial().name).to.equal('test');
 		});
-
 	});
+
 
 	describe('#getModified', function () {
 
