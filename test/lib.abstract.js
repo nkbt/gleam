@@ -177,18 +177,19 @@ describe('Entity', function () {
 
 	});
 
-	describe('#modified', function () {
+	describe('#getModified', function () {
 
-		it('should not have modified status', function () {
+		it('should not have any modified properties', function () {
 			var entity = gleam.entity('user');
-			expect(entity.modified()).to.deep.equal({id: false, name: false, email: false});
+			expect(entity.getModified()).to.be.empty;
 		});
 
-		it('should set modified flag for set values', function () {
+		it('should add set values to modified fields', function () {
 			var entity = gleam.entity('user');
 			entity.set({id: 1});
-			expect(entity.modified().id).to.be.true;
-			expect(entity.modified().email).to.be.false;
+			expect(entity.getModified()).to.have.keys('id');
+			expect(entity.getModified()).to.be.deep.equal({id: 1});
+			expect(entity.getModified().id).to.equal(1);
 		});
 
 	});
