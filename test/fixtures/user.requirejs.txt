@@ -1,0 +1,28 @@
+define(['underscore', 'entity/abstract'], function (_, factory) {
+	"use strict";
+
+	var exports = {Entity: null},
+		_namespace = "user";
+
+/**
+ * @module UserEntity
+ */
+var UserEntity = {
+	id: function () {
+	},
+	name: function () {
+	},
+	email: function () {
+	},
+	_validateEmail: function (value) {
+		return value === 'nik@butenko.me';
+	}
+};
+
+exports.Entity = UserEntity;
+
+
+	return function (defaults) {
+		return factory(_namespace, exports.Entity, defaults);
+	};
+});

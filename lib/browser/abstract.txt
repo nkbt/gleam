@@ -1,0 +1,7 @@
+define(['underscore'], function () {
+	"use strict";
+
+<%= content %>
+
+	return abstract;
+});

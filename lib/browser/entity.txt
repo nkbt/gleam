@@ -1,0 +1,12 @@
+define(['underscore', 'entity/abstract'], function (_, factory) {
+	"use strict";
+
+	var exports = {Entity: null},
+		_namespace = "<%= namespace %>";
+
+<%= content %>
+
+	return function (defaults) {
+		return factory(_namespace, exports.Entity, defaults);
+	};
+});
