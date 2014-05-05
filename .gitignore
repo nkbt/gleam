@@ -1,3 +1,10 @@
+#############
+## Node
+#############
+
+node_modules
+docs
+
 lib-cov
 *.seed
 *.log
@@ -12,3 +19,9 @@ logs
 results
 
 npm-debug.log
+
+#############
+## PHP Storm
+#############
+.idea
+atlassian-ide-plugin.xml

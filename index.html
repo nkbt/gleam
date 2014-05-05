@@ -1,0 +1,366 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<title>Gleam by nkbt</title>
+	<link rel="stylesheet" href="stylesheets/styles.css">
+	<link rel="stylesheet" href="stylesheets/pygment_trac.css">
+	<script src="javascripts/respond.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" href="stylesheets/ie.css">
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<style>
+		body {
+		}
+		pre {
+			font-size: 12px;
+			line-height: 1.3;
+			font-family: "Consolas", "Menlo", "Courier", monospace;
+		}
+		code .init { color: #2F6FAD }
+		code .string { color: #5890AD }
+		code .keyword { color: #8A6343 }
+		code .number { color: #2F6FAD }
+	</style>
+</head>
+<body>
+<div id="header">
+	<nav>
+		<ul>
+			<li class="fork"><a href="https://github.com/nkbt/gleam">View On GitHub</a></li>
+			<li class="downloads"><a href="https://github.com/nkbt/gleam/zipball/master">ZIP</a></li>
+			<li class="downloads"><a href="https://github.com/nkbt/gleam/tarball/master">TAR</a></li>
+			<li class="title">DOWNLOADS</li>
+		</ul>
+	</nav>
+</div>
+<!-- end header -->
+
+<div class="wrapper">
+
+	<section>
+		<div id="title">
+			<h1>Gleam</h1>
+			<p>Reusable models for the Node server and browsers</p>
+			<hr>
+			<span class="credits left">Project maintained by <a href="https://github.com/nkbt">nkbt</a></span>
+			<span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+		</div>
+
+		<p>I like the idea of Transfer Objects within application. In my applications I use Entities (simple TO but with some additional functions like data validation, type casting, etc). Because I
+			planned to write modern one-page-apps I decided to have Entities on the front-end as well.</p>
+
+		<p>That is how the idea of Gleam was born. And now I am able to write Entity once and use it on the NodeJS side and on the browser side. Every entity is automatically serialized to JSON and
+			deserialized on front-end to correct objects. Gleam is for now on the very early stage, it is more like "proof of concept". I still need to build some real projects based on it.</p>
+
+		<p><a href="./coverage.html">Coverage report</a></p>
+	</section>
+
+    <h3>The Gleam test suite documentation generated with the <a href="http://visionmedia.github.com/mocha">Mocha</a> test framework.</h3>
+
+<section class="suite">
+  <h2>Gleam</h2>
+  <dl>
+	<dt>should throw error if root not set</dt>
+	<dd><pre><code>expect(Gleam).to.throw('Root');</code></pre></dd>
+	<dt>should have private _root property</dt>
+	<dd><pre><code>expect(gleam).to.have.property('_root', root);</code></pre></dd>
+	<dt>should response to [entity, fromJson] instance methods</dt>
+	<dd><pre><code>expect(Gleam).to.respondTo('entity');
+expect(Gleam).to.respondTo('fromJson');</code></pre></dd>
+	<dt>should response to [is, buildSync] static methods</dt>
+	<dd><pre><code>expect(Gleam).itself.to.respondTo('is');
+expect(Gleam).itself.to.respondTo('buildSync');</code></pre></dd>
+  </dl>
+</section>
+<section class="suite">
+  <h2>Gleam#entity</h2>
+  <dl>
+	<dt>should throw error in case of incorrect namespace</dt>
+	<dd><pre><code>function createNotExistingEntity() {
+	return gleam.entity('wrongSchema');
+}
+expect(createNotExistingEntity).to.throw(Error);</code></pre></dd>
+	<dt>should throw error in case of wrong Entity schema</dt>
+	<dd><pre><code>function createEntityWithWrongSchema() {
+	return gleam.entity('wrongSchema');
+}
+expect(createEntityWithWrongSchema).to.throw('Entity must be an object');</code></pre></dd>
+	<dt>should throw error in case of Entity schema has properties and not methods</dt>
+	<dd><pre><code>function createEntityWithFaultySchema() {
+	return gleam.entity('schemaWithProperties');
+}
+expect(createEntityWithFaultySchema).to.throw('Entity schema must not have any properties');</code></pre></dd>
+	<dt>should create UserEntity</dt>
+	<dd><pre><code>var entity = gleam.entity('user');
+expect(entity).to.be.an('object');
+expect(entity).to.have.keys('id', 'name', 'email');
+expect(entity.id).to.be.a('function');
+expect(entity.name).to.be.a('function');
+expect(entity.email).to.be.a('function');
+expect(Gleam.is(entity, 'user')).to.be.true;</code></pre></dd>
+	<dt>should create UserTestEntity</dt>
+	<dd><pre><code>var entity = gleam.entity('user/test');
+expect(entity).to.be.an('object');
+expect(entity).to.have.keys('id');
+expect(entity.id).to.be.a('function');
+expect(Gleam.is(entity, 'user/test')).to.be.true;</code></pre></dd>
+	<dt>should create UserEntity with defaults</dt>
+	<dd><pre><code>var entity = gleam.entity('user', userData);
+expect(entity.id()).to.equal(userData.id);
+expect(entity.name()).to.equal(userData.name);
+expect(entity.email()).to.equal(userData.email);</code></pre></dd>
+	<dt>should throw Error if wrong defaults passed</dt>
+	<dd><pre><code>function createEntityWithWrongData() {
+	return gleam.entity('user', 'not an object');
+}
+expect(createEntityWithWrongData).to.throw('Values must be an object');</code></pre></dd>
+	<dt>should set defaults without setting modified flag</dt>
+	<dd><pre><code>var entity = gleam.entity('user', userData);
+expect(entity.modified().id).to.be.false;
+expect(entity.modified().name).to.be.false;
+expect(entity.modified().email).to.be.false;</code></pre></dd>
+	<dt>should fill initial values with defaults</dt>
+	<dd><pre><code>var entity = gleam.entity('user', userData);
+expect(entity.initial().id).to.equal(userData.id);
+expect(entity.initial().name).to.equal(userData.name);
+expect(entity.initial().email).to.equal(userData.email);</code></pre></dd>
+  </dl>
+</section>
+<section class="suite">
+  <h2>Gleam#fromJson</h2>
+  <dl>
+	<dt>should return UserEntity from user.json</dt>
+	<dd><pre><code>var entity = gleam.fromJson(userJson);
+expect(entity).to.be.an('object');
+expect(Gleam.is(entity, 'user')).to.be.true;
+expect(entity.id()).to.equal(1);</code></pre></dd>
+	<dt>should return array of UserEntity from user-list.json</dt>
+	<dd><pre><code>var list = gleam.fromJson(userListJson);
+expect(list).to.be.an('array');
+expect(list).to.have.length(2);
+expect(Gleam.is(list[0], 'user')).to.be.true;
+expect(list[0].id()).to.equal(1);
+expect(Gleam.is(list[1], 'user')).to.be.true;
+expect(list[1].id()).to.equal(2);</code></pre></dd>
+  </dl>
+</section>
+<section class="suite">
+  <h2>Gleam#is</h2>
+  <dl>
+	<dt>should match UserEntity to be instance of &quot;user&quot;</dt>
+	<dd><pre><code>expect(Gleam.is(entity, 'user')).to.be.true;</code></pre></dd>
+	<dt>should not match UserEntity to be instance of &quot;not/user&quot;</dt>
+	<dd><pre><code>expect(Gleam.is(entity, 'not/user')).to.be.false;</code></pre></dd>
+	<dt>should not match wrong input to be instance of &quot;user&quot;</dt>
+	<dd><pre><code>expect(Gleam.is('Not an object', 'user')).to.be.false;</code></pre></dd>
+  </dl>
+</section>
+<section class="suite">
+  <h2>Gleam#build</h2>
+  <dl>
+	<dt>should return spaceFix</dt>
+	<dd><pre><code>expect(jsOut).to.be.a('string');</code></pre></dd>
+	<dt>should return valid RequireJS module</dt>
+	<dd><pre><code>expect(spaceFix(jsOut)).to.be.equal(spaceFix(jsIn));</code></pre></dd>
+  </dl>
+</section>
+<section class="suite">
+  <h2>Entity</h2>
+  <dl>
+	<section class="suite">
+	  <h2>#set</h2>
+	  <dl>
+		<dt>should only accept simple objects and throw error otherwise</dt>
+		<dd><pre><code>expect(function () {
+	return entity.set({id: 1});
+}).to.not.throw(Error);
+expect(function () {
+	return entity.set('Hello, world!');
+}).to.throw('Values must be an object');
+expect(function () {
+	return entity.set(['hello', 'world']);
+}).to.throw('Values must be an object');
+expect(function () {
+	return entity.set(function () {
+	});
+}).to.throw('Values must be an object');</code></pre></dd>
+		<dt>should set valid values</dt>
+		<dd><pre><code>entity.set(userData);
+expect(entity.id()).to.equal(userData.id);
+expect(entity.name()).to.equal(userData.name);
+expect(entity.email()).to.equal(userData.email);</code></pre></dd>
+		<dt>should throw descriptive error for invalid data</dt>
+		<dd><pre><code>expect(function () {
+	entity.set({email: 'wrong-email'});
+}).to.throw('Value [wrong-email] is not valid for [user.email]');</code></pre></dd>
+		<dt>should set overridden value using setter _setEmail no matter what is passed, email = always@email.com</dt>
+		<dd><pre><code>var entity = gleam.entity('setterGetter', {email: 'nik@butenko.me'});
+expect(entity.email()).to.equal('always@email.com');</code></pre></dd>
+		<dt>should set value in setter _setPassword using the context, password = context.password2</dt>
+		<dd><pre><code>var entity = gleam.entity('setterGetter', {password: 'test', password2: 'test2'});
+expect(entity.password()).to.equal('test2');</code></pre></dd>
+		<dt>should set value in setter _setId using self data, id = self.constant() + value</dt>
+		<dd><pre><code>var entity = gleam.entity('setterGetter', {id: 1});
+expect(entity.id()).to.equal(43);</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#get</h2>
+	  <dl>
+		<dt>should return simple object with current entity values</dt>
+		<dd><pre><code>var entity = gleam.entity('user', userData);
+expect(entity.get()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;});</code></pre></dd>
+		<dt>should return simple object with all nested entities simplified</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userWithTestJson);
+expect(entity.get()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;, test: {id: 2}});</code></pre></dd>
+		<dt>should return simple object with all nested arrays of entities simplified</dt>
+		<dd><pre><code>var entity = gleam.fromJson(requireText('./fixtures/user-with-arrays.json'));
+expect(entity.get()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;, tests: [
+{id: 2},
+{id: 3}
+], messages: [&quot;Message 1&quot;, &quot;Message 2&quot;]});</code></pre></dd>
+		<dt>should return overridden value using getter _getName</dt>
+		<dd><pre><code>var entity = gleam.entity('setterGetter');
+entity.name('Me');
+expect(entity.name()).to.equal('Always');</code></pre></dd>
+		<dt>should use self instance to override value using getter _getAddress, address = self.name()</dt>
+		<dd><pre><code>var entity = gleam.entity('setterGetter');
+entity.address('Address');
+expect(entity.address()).to.equal('Always');</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#isValid</h2>
+	  <dl>
+		<dt>should return &quot;true&quot; for valid email passed</dt>
+		<dd><pre><code>expect(entity.isValid('email', 'nik@butenko.me')).to.be.true;</code></pre></dd>
+		<dt>should return &quot;false&quot; for invalid email passed</dt>
+		<dd><pre><code>expect(entity.isValid('email', 'wrong@email')).to.be.false;</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#getProperty</h2>
+	  <dl>
+		<dt>should return value for requested property</dt>
+		<dd><pre><code>expect(entity.getProperty('id')).to.equal(1);</code></pre></dd>
+		<dt>should throw descriptive error in case of accessing undefined property</dt>
+		<dd><pre><code>expect(function () {
+	entity.getProperty('wrong');
+}).to.throw('Accessing undefined property [user.wrong]');</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#getFlat</h2>
+	  <dl>
+		<dt>should return simple object with stripped nested entities</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userWithTestJson);
+expect(entity.getFlat()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;});</code></pre></dd>
+		<dt>should return simple object with stripped nested entities in all Array-typed properties</dt>
+		<dd><pre><code>var entity = gleam.fromJson(requireText('./fixtures/user-with-arrays.json'));
+expect(entity.getFlat()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;, tests: [], messages: [&quot;Message 1&quot;, &quot;Message 2&quot;]});</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#initial</h2>
+	  <dl>
+		<dt>should have undefined initial values</dt>
+		<dd><pre><code>var entity = gleam.entity('user');
+expect(entity.initial()).to.deep.equal({id: undefined, name: undefined, email: undefined});</code></pre></dd>
+		<dt>should return initial value of entity</dt>
+		<dd><pre><code>var entity = gleam.entity('user', userData);
+expect(entity.initial()).to.deep.equal({id: 1, name: &quot;Nik&quot;, email: &quot;nik@butenko.me&quot;});</code></pre></dd>
+		<dt>should not modify initial after setting new values</dt>
+		<dd><pre><code>var entity = gleam.entity('user');
+entity.set({id: 1});
+expect(entity.initial().id).to.be.undefined;</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#modified</h2>
+	  <dl>
+		<dt>should not have modified status</dt>
+		<dd><pre><code>var entity = gleam.entity('user');
+expect(entity.modified()).to.deep.equal({id: false, name: false, email: false});</code></pre></dd>
+		<dt>should set modified flag for set values</dt>
+		<dd><pre><code>var entity = gleam.entity('user');
+entity.set({id: 1});
+expect(entity.modified().id).to.be.true;
+expect(entity.modified().email).to.be.false;</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#is</h2>
+	  <dl>
+		<dt>should match UserEntity to be instance of &quot;user&quot;</dt>
+		<dd><pre><code>expect(entity.is('user')).to.be.true;</code></pre></dd>
+		<dt>should not match UserEntity to be instance of &quot;not/user&quot;</dt>
+		<dd><pre><code>expect(entity.is('not/user')).to.be.false;</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#toJSON</h2>
+	  <dl>
+		<dt>should return simple object with namespace</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userJson);
+expect(entity.toJSON()).to.deep.equal(userData);</code></pre></dd>
+		<dt>should return simple object with namespaces for nested entity</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userWithTestJson);
+expect(entity.toJSON()).to.deep.equal(userWithTestData);</code></pre></dd>
+		<dt>should support JSON.stringify</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userJson);
+expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(userJson));</code></pre></dd>
+		<dt>should support JSON.stringify for nested entity</dt>
+		<dd><pre><code>var entity = gleam.fromJson(userWithTestJson);
+expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(userWithTestJson));</code></pre></dd>
+		<dt>should support JSON.stringify for arrays of nested entities</dt>
+		<dd><pre><code>var json = requireText('./fixtures/user-with-arrays.json'),
+entity = gleam.fromJson(json);
+expect(spaceFix(JSON.stringify(entity))).to.equal(spaceFix(json));</code></pre></dd>
+	  </dl>
+	</section>
+	<section class="suite">
+	  <h2>#toString</h2>
+	  <dl>
+		<dt>should return descriptive string</dt>
+		<dd><pre><code>var entity = gleam.entity('user');
+expect(entity.toString()).to.equal('[object Gleam:user]');</code></pre></dd>
+		<dt>should support casting to string</dt>
+		<dd><pre><code>var entity = gleam.entity('user/test');
+expect(['', entity].join('')).to.equal('[object Gleam:user/test]');</code></pre></dd>
+	  </dl>
+	</section>
+  </dl>
+</section>
+
+</div>
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-47923632-2', 'nkbt.github.io');
+	ga('send', 'pageview');
+
+	(function () {
+		function highlight(js) {
+			return js
+					.replace(/</g, '&lt;')
+					.replace(/>/g, '&gt;')
+					.replace(/\/\/(.*)/gm, '<span class="comment">//$1</span>')
+					.replace(/('.*')/gm, '<span class="string">$1</span>')
+					.replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
+					.replace(/(\d+)/gm, '<span class="number">$1</span>')
+					.replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
+					.replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
+		}
+		Array.prototype.forEach.call(document.querySelectorAll('code'), function ($el) {
+			$el.innerHTML = highlight($el.innerHTML)
+		});
+	})();
+
+</script>
+</body>
+</html>
