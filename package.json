@@ -13,22 +13,22 @@
 		}
 	],
 	"dependencies": {
-		"async": "0.x",
+		"async": "^2.1.2",
 		"underscore": "1.x",
-		"glob": "3.x",
+		"glob": "^7.1.1",
 		"mkdirp": "0.x"
 	},
 	"devDependencies": {
-		"grunt": "~0.4.2",
-		"grunt-cli": "~0.1.13",
+		"grunt": "~1.0.1",
+		"grunt-cli": "~1.2.0",
 		"grunt-simple-mocha": "~0.4.0",
-		"grunt-contrib-jshint": "~0.7.2",
-		"grunt-contrib-watch": "~0.5.3",
-		"mocha": "~1.17.1",
-		"chai": "~1.9.0",
-		"rimraf": "~2.2.6",
-		"jscoverage": "~0.3.8",
-		"grunt-contrib-concat": "~0.3.0"
+		"grunt-contrib-jshint": "~1.0.0",
+		"grunt-contrib-watch": "~1.0.0",
+		"mocha": "~3.1.2",
+		"chai": "~3.5.0",
+		"rimraf": "~2.5.4",
+		"jscoverage": "~0.6.0",
+		"grunt-contrib-concat": "~1.0.1"
 	},
 	"keywords": [
 		"entity",
